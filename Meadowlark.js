@@ -1,16 +1,11 @@
 var express = require('express');
+var fortune = require('./lib/fortune.js');
 var app = express();
 var handlebars = require('express3-handlebars');
 app.engine('hbs', handlebars({extname:'hbs', defaultLayout: 'main.hbs'}));
 app.set('view engine', 'hbs');
 app.set('port', process.env.PORT || 3000);
 
-var fortunes = ["Conquer your fears or they will conquer you",
-    "Rivers need springs",
-    "Do not feat what you don'n know",
-    "You will have a pleasant surpise",
-    "Whenever possible, keep it smile"
-];
 app.use(express.static(__dirname + '/public'));
 
 app.get('/', function(request, response) {
@@ -18,8 +13,7 @@ app.get('/', function(request, response) {
 });
 
 app.get('/about', function(request, response) {
-    var randomFortune = fortunes[Math.floor(Math.random()*fortunes.length)];
-    response.render('about', {fortune : randomFortune});
+    response.render('about', {fortune : fortune.getFortune()});
 });
 /*Custom 404 page*/
 app.use(function(request, response) {
